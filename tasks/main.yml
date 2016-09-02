@@ -1,0 +1,13 @@
+---
+- name: Install Marked via Mac App Store
+  command: mas install "{{ item.id }}"
+  args:
+    creates: /Applications/{{ item.name }}.app
+  with_items:
+    - { id: 890031187, name: "Marked 2" }
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == true
+
+- name: Install Marked via Homebrew Cask
+  homebrew_cask:
+    name: marked
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == false
